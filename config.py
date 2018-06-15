@@ -19,7 +19,7 @@ mailSubjectStatus = '[GS DB] Daily server status mail - '+str(time.strftime('%Y 
 smtpHost = 'smtp.gmail.com'
 smtpPort = 465
 smtpUsername = 'vancsisoft@gmail.com'
-smtpPassword = 'Emleklap82'
+smtpPassword = 'Fill_Me'
 
 
 antiDosTimerDay = 3
