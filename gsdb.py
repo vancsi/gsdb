@@ -12,6 +12,10 @@ The script is started by cron: every hours:3min between 8am and 22pm.
 
 '''
 Change log:
+Improvements in v1_14:
+- Quick fix in getItemsFromWeb(): div class name 'hirdeteslist_hirdetes' changed from 'hirdeteslist_hirdetes hirdeteslist_hirdetes'
+  on the web page. Code modified to search for both formats.
+
 Improvements in v1_13:
 - getItemsFromWeb(): implemented errorHandling() in case of gsfanatic page url is not reachable.
 - getItemStatsFromDb(): implemented errorHandling()
@@ -134,7 +138,7 @@ import operator							# sorting list of dicts
 from utils import *
 from config import *
 
-gsdbVersion = 'v1.13'
+gsdbVersion = 'v1.14'
 
 
 #function updateSellerToDb
@@ -204,7 +208,7 @@ def getItemsFromWeb(url):
 	items = []
 	categoryInterested = getCategoryInterestedFromDb()
 	for div in divs:
-		if div.get('class') == 'hirdeteslist_hirdetes':
+		if (div.get('class') == 'hirdeteslist_hirdetes') or (div.get('class') == 'hirdeteslist_hirdetes hirdeteslist_hirdetes'):
 			if not (re.search('(AJÁNLATOT VÁR)',str(div)) or re.search('(hirdeteslist_ar_szoveges)',str(div))):
 				category = normalizeString(re.findall('\t\t\t(.*)<br />',str(div.a))[1])
 				if not category in categoryInterested : continue
