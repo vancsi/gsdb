@@ -169,7 +169,7 @@ def encodeString(stringToEncode):
 
 #Function sendMail
 #Function sends email with interesting items from result of checkInMailNotificationList
-def sendMail(mailBody, mailSubject, mailFrom, mailTo, smtpHost, smtpPort, smtpUsername, smtpPassword):
+def sendMail(mailBody, mailSubject):
 	msg = MIMEText(mailBody, 'plain', 'utf-8')
 	msg['Subject'] = mailSubject
 	msg['From'] = mailFrom

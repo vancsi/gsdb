@@ -58,7 +58,7 @@ def getStatsFromDb():
 def parseDataFromLog(paramName, f):
 	runs = re.findall(paramName, f.read())
 	f.seek(0) # setting the cursor back to the beginning of the file
-	for run in runs: 
+	for run in runs:
 		result = run
 	return result
 
@@ -79,7 +79,7 @@ def getLastRunFromLog():
 
 
 #Function generateStatsMailBody()
-#Input: 
+#Input:
 #Return:
 def generateStatsMailBody(noIds, noActive, lastCheckedDay, last_gsdb_run, last_nightly_run):
 	warningLastCheckedDay = ''
@@ -125,7 +125,7 @@ def main():
 	last_gsdb_run = getLastRunFromLog()[0]
 	last_nightly_run = getLastRunFromLog()[1]
 	mailBody = generateStatsMailBody(noIds, noActive, lastCheckedDay, last_gsdb_run, last_nightly_run)
-	sendMail(mailBody, mailSubjectStatus, mailFrom, mailTo, smtpHost, smtpPort, smtpUsername, smtpPassword)
+	sendMail(mailBody, mailSubjectStatus)
 
 	debug('***************************************************')
 	info(' ***        GSDB daily stats %s finished        ***' % (daily_stats_version))

@@ -107,12 +107,12 @@ Improvements in v_097:
 Improvements in v_096:
 - normalizeString function implementation and use (for name and category, categoryInterested..)
 - encodeString function implementation.
-Hotpatch for v_096: 
+Hotpatch for v_096:
 - Create new field to Instruments table, with name "displayName", and run db_update_script_01.py normalizing script (only once!!!)
 
 Improvements in v_095:
 - Logging to 2 different log files: log_debug.log; log_info.log
-- utf-8 error handling with try: except: in several functions - temporarily solution, string normalizing function 
+- utf-8 error handling with try: except: in several functions - temporarily solution, string normalizing function
 is needed to be implement!
 
 
@@ -416,7 +416,7 @@ def main():
 		if itemsForMail != []:
 			mailBody = generateMailContent(itemsForMail)
 			#Sending mail witn newly added items, which are categoryInterested, newly added to DB, and filtered by mailNotificationList.
-			sendMail(mailBody, mailSubjectFyi, mailFrom, mailTo, smtpHost, smtpPort, smtpUsername, smtpPassword)
+			sendMail(mailBody, mailSubjectFyi)
 
 	debug('****************************************')
 	info(' ***       GSDB %s finished       ***' % (gsdbVersion))
