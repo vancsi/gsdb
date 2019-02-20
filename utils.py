@@ -7,7 +7,6 @@ Environmental notes:
 The script is located on DNS-320 NAS /ffp/home/vancsi/scripts/gsdb/ , named as gsdb.py.
 Needs Python 2.7 to run. Needs the gsdb.sqlite database containing the created tables in the same directory.
 Also needs BeautifulSoup compiled python file in the same directory.
-The script is started by cron: every hours:3min between 8am and 22pm.
 '''
 
 '''
@@ -192,7 +191,7 @@ def sendMail(mailBody, mailSubject, mailFrom, mailTo, smtpHost, smtpPort, smtpUs
 
 
 #Function errorHandling
-#Input: 
+#Input:
 #	isExit (boolean): needs to exit or not
 #	isMail (boolean): needs to send e-mail about the problem or not.
 #	calledFrom (str): the function from where errorHandling is called
