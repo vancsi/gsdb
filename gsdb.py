@@ -348,7 +348,8 @@ def findCheapItems(addedNewItemsToDb):
 			for itemFromDb in getItemStatsFromDb(item['name'], item['id']):
 				dbPrice = itemFromDb[3]
 				dbActive = itemFromDb[6]
-				if ((dbActive == 0) and (actualPrice <= dbPrice*0.75) and (dbPrice - actualPrice > 5000)):
+                dbSoldDate = itemFromDb[5]
+				if ((dbActive == 0) and (actualPrice <= dbPrice*0.75) and (dbPrice - actualPrice > 5000) and (calculateDeltaTime(dbSoldDate, dateToday)<365)):
 					dbSoldDateDelta = calculateDeltaTime(itemFromDb[4], itemFromDb[5])
 					if dbSoldDateDelta < 15:
 						cheapItems.append(item)
