@@ -86,11 +86,7 @@ def generateStatsMailBody(noIds, noActive, lastCheckedDay, last_gsdb_run, last_n
 	warningLastGsdbRun = ''
 	warningLastNightlyRun = ''
 	if int(lastCheckedDay) != int(dateToday):
-		warningLastCheckedDay = '\nlastCheckedDay IN DATABASE IS NOT UP-TO-DATE!\nIT SEEMS gsdb_nightly_checkSold.py DID NOT RUN OR FINIS RUNNING LAST NIGHT!'
-#	if int(last_gsdb_run) < (int(dateToday)-1):
-#		warningLastGsdbRun = '\ngsdb.py SEEMS DID NOT RUN OR FINIS RUNNING YESTERDAY!'
-#	if int(last_nightly_run) != int(dateToday):
-#		warningLastNightlyRun = '\ngsdb_nightly_checkSold.py SEEMS DID NOT RUN OR FINIS RUNNING LAST NIGHT!'
+		warningLastCheckedDay = '\nlastCheckedDay IN DATABASE IS NOT UP-TO-DATE!\nIT SEEMS gsdb_nightly_checkSold.py DID NOT RUN OR FINISH RUNNING LAST NIGHT!'
 	mailBody = ''
 	mailBody = mailBody+'GSDB database and script daily statistics at '+dateToday+'\n\n'
 	mailBody = mailBody+'Number of total items in DB: '+noIds+'\n'
