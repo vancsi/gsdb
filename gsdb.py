@@ -341,27 +341,31 @@ def getItemStatsFromDb(itemName, itemId):
 #	- Sold item found in db, which is sold within 15 days cheaper than the actual item.
 #	- Active item found in db (not sold), but it is 25% (but at least 5000Ft) more expensive than the actual item.
 def findCheapItems(addedNewItemsToDb):
-	cheapItems = []
-	for item in addedNewItemsToDb:
-		if item['name'] != u'':
-			actualPrice = int(item['price'])
-			for itemFromDb in getItemStatsFromDb(item['name'], item['id']):
-				dbPrice = itemFromDb[3]
-				dbActive = itemFromDb[6]
+    cheapItems = []
+    for item in addedNewItemsToDb:
+        if item['name'] != u'':
+            actualPrice = int(item['price'])
+            for itemFromDb in getItemStatsFromDb(item['name'], item['id']):
+                dbPrice = itemFromDb[3]
+                dbActive = itemFromDb[6]
                 dbSoldDate = itemFromDb[5]
-				if ((dbActive == 0) and (actualPrice <= dbPrice*0.75) and (dbPrice - actualPrice > 5000) and (calculateDeltaTime(dbSoldDate, dateToday)<365)):
-					dbSoldDateDelta = calculateDeltaTime(itemFromDb[4], itemFromDb[5])
-					if dbSoldDateDelta < 15:
-						cheapItems.append(item)
-						debug('findCheapItems: sold item found in db: '+str(itemFromDb))
-						break
-				else:
-					if ((dbActive == 1) and (actualPrice <= dbPrice*0.75) and (dbPrice - actualPrice > 5000 )):
-						cheapItems.append(item)
-						debug('findCheapItems: active item found in db: '+str(itemFromDb))
-						break
-	info(str(len(cheapItems))+' Cheap item(s) found.')
-	return(cheapItems)
+                if dbActive == 0:
+                    if actualPrice <= (dbPrice*0.75):
+                        if (dbPrice - actualPrice) > 5000:
+                            if calculateDeltaTime(itemFromDb[4], itemFromDb[5]) < 15:
+                                if calculateDeltaTime(dbSoldDate, dateToday) < 365:
+                                    cheapItems.append(item)
+                                    debug('findCheapItems: sold item found in db: '+str(itemFromDb))
+                                    break
+                else:
+                    if dbActive == 1:
+                        if actualPrice <= (dbPrice*0.75):
+                            if (dbPrice - actualPrice) > 5000:
+                                cheapItems.append(item)
+                                debug('findCheapItems: active item found in db: '+str(itemFromDb))
+                                break
+    info(str(len(cheapItems))+' Cheap item(s) found.')
+    return(cheapItems)
 
 
 #Function generateMailContent link
