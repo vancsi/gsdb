@@ -203,7 +203,7 @@ def errorHandling(isExit, isMail, calledFrom, errorMessage):
 	if isMail:
 		footer = 'Mail sent by vancsisoft, gsdb'
 		mailBody = 'errorHandling() is called from '+calledFrom+' at '+time.strftime('%y%m%d %H:%M:%S')+'\n'+errorMessage+'\n\n\n'+footer
-		sendMail(mailBody, mailSubjectError, mailFrom, mailTo, smtpHost, smtpPort, smtpUsername, smtpPassword)
+		sendMail(mailBody, mailSubjectError)
 	if isExit:
 		debug('errorHandling(): exiting...')
 		sys.exit()
