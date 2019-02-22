@@ -354,6 +354,7 @@ def findCheapItems(addedNewItemsToDb):
                         if (dbPrice - actualPrice) > 5000:
                             if calculateDeltaTime(itemFromDb[4], itemFromDb[5]) < 15:
                                 if calculateDeltaTime(dbSoldDate, dateToday) < 365:
+                                    info('********************dbSoldDate: '+str(dbSoldDate)+' dateToday: '+str(dateToday)+' calculatedDelta: '+str(calculateDeltaTime(dbSoldDate, dateToday)))
                                     cheapItems.append(item)
                                     debug('findCheapItems: sold item found in db: '+str(itemFromDb))
                                     break
