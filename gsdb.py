@@ -138,7 +138,7 @@ import operator							# sorting list of dicts
 from utils import *
 from config import *
 
-gsdbVersion = 'v1.14'
+gsdbVersion = 'v1.15'
 
 
 #function updateSellerToDb
@@ -295,43 +295,62 @@ def checkInMailNotificationList(items):
 	return(returnList)
 
 
+#function filterOldItemsFromList()
+#Input is a list, containing items from db (reference items)
+#Function removes items from list, which were sold more than 1 year before
+#Returns the filtered list of items.
+def filterOldItemsFromList(inputList):
+    outputList = []
+    if len(inputList)>10:
+        for item in inputList:
+            if item[6] == 0:
+                if calculateDeltaTime(item[5], dateToday) < 365:
+                    outputList.append(item)
+            else:
+                outputList.append(item)
+    else:
+         outputList = inputList
+    return(outputList)
+
+
 #function getItemStatsFromDb
 #Function gets db rows with itemName, except the actual one
 #Input: itemName(str), itemId(int); output: itemList: list of items from db (whole row: id, name, category, price, addedDate, soldDate, active, sellerName, sellerPhone, sellerTown, link)
 def getItemStatsFromDb(itemName, itemId):
-	try:
-		itemName = normalizeString(itemName)
-	except:
-		error('getItemStatsFromDb: could not normalize itemName with function normalizeString()')
-		isExit = False
-		isMail = True
-		errorHandling(isExit, isMail, 'getItemStatsFromDb()', 'could not normalize itemName with function normalizeString(): '+itemName)
-	conn = sqlite3.connect('gsdb.sqlite')
-	cur = conn.cursor()
-	itemList = []
-	try:
-		cur.execute('''SELECT * FROM Instruments WHERE name = ?''', (itemName, ))
-	except Exception as ex_dbRead:
-		#If the db read is not successful, try to remove .decode('utf-8') from above!
-		error('getItemStatsFromDb: DB read unsuccessful: '+ex_dbRead.message)
-		isExit = False
-		isMail = True
-		errorHandling(isExit, isMail, 'getItemStatsFromDb()', 'DB read unsuccessful: '+ex_dbRead.message)
-	try:
-		row = cur.fetchone()
-		while (row != None):
-			if itemId == row[0]:
-				row = cur.fetchOne()
-				continue
-			itemList.append(list(row))
-			row = cur.fetchone()
-			debug('getItemStatsFromDb: Item found in db with name: '+itemName)
-	except:
-		debug('getItemStatsFromDb: Item not in db with name: '+itemName)
-	conn.commit()
-	cur.close()
-	itemList.sort(key=operator.itemgetter(3,4))
-	return(itemList)
+    try:
+        itemName = normalizeString(itemName)
+    except:
+        error('getItemStatsFromDb: could not normalize itemName with function normalizeString()')
+        isExit = False
+        isMail = True
+        errorHandling(isExit, isMail, 'getItemStatsFromDb()', 'could not normalize itemName with function normalizeString(): '+itemName)
+    conn = sqlite3.connect('gsdb.sqlite')
+    cur = conn.cursor()
+    itemList = []
+    try:
+        cur.execute('''SELECT * FROM Instruments WHERE name = ?''', (itemName, ))
+    except Exception as ex_dbRead:
+        #If the db read is not successful, try to remove .decode('utf-8') from above!
+        error('getItemStatsFromDb: DB read unsuccessful: '+ex_dbRead.message)
+        isExit = False
+        isMail = True
+        errorHandling(isExit, isMail, 'getItemStatsFromDb()', 'DB read unsuccessful: '+ex_dbRead.message)
+    try:
+        row = cur.fetchone()
+        while (row != None):
+            if itemId == row[0]:
+                row = cur.fetchOne()
+                continue
+            itemList.append(list(row))
+            row = cur.fetchone()
+            debug('getItemStatsFromDb: Item found in db with name: '+itemName)
+    except:
+        debug('getItemStatsFromDb: Item not in db with name: '+itemName)
+    conn.commit()
+    cur.close()
+    filterOldItemsFromList(itemList)
+    itemList.sort(key=operator.itemgetter(3,4))
+    return(itemList)
 
 
 #Function findCheapItems
@@ -354,7 +373,6 @@ def findCheapItems(addedNewItemsToDb):
                         if (dbPrice - actualPrice) > 5000:
                             if calculateDeltaTime(itemFromDb[4], itemFromDb[5]) < 15:
                                 if calculateDeltaTime(dbSoldDate, dateToday) < 365:
-                                    info('********************dbSoldDate: '+str(dbSoldDate)+' dateToday: '+str(dateToday)+' calculatedDelta: '+str(calculateDeltaTime(dbSoldDate, dateToday)))
                                     cheapItems.append(item)
                                     debug('findCheapItems: sold item found in db: '+str(itemFromDb))
                                     break
