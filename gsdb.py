@@ -304,7 +304,7 @@ def filterOldItemsFromList(inputList):
     if len(inputList)>10:
         for item in inputList:
             if item[6] == 0:
-                if calculateDeltaTime(str(item[5]), dateToday) < 365:
+                if calculateDeltaTime(item[5], dateToday) < 365:
                     outputList.append(item)
             else:
                 outputList.append(item)
@@ -348,7 +348,7 @@ def getItemStatsFromDb(itemName, itemId):
         debug('getItemStatsFromDb: Item not in db with name: '+itemName)
     conn.commit()
     cur.close()
-    filterOldItemsFromList(itemList)
+    itemlist = filterOldItemsFromList(itemList)
     itemList.sort(key=operator.itemgetter(3,4))
     return(itemList)
 
