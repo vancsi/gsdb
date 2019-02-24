@@ -348,7 +348,7 @@ def getItemStatsFromDb(itemName, itemId):
         debug('getItemStatsFromDb: Item not in db with name: '+itemName)
     conn.commit()
     cur.close()
-    itemlist = filterOldItemsFromList(itemList)
+    itemList = filterOldItemsFromList(itemList)
     itemList.sort(key=operator.itemgetter(3,4))
     return(itemList)
 
