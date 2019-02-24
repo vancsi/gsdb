@@ -304,7 +304,7 @@ def filterOldItemsFromList(inputList):
     if len(inputList)>10:
         for item in inputList:
             if item[6] == 0:
-                if calculateDeltaTime(item[5], dateToday) < 365:
+                if calculateDeltaTime(str(item[5]), dateToday) < 365:
                     outputList.append(item)
             else:
                 outputList.append(item)
